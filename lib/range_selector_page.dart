@@ -1,25 +1,26 @@
+import 'package:f_random_number/main.dart';
 import 'package:f_random_number/randomize_page.dart';
-import 'package:f_random_number/randomizer_change_notifier.dart';
 import 'package:f_random_number/range_selector_form.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:provider/provider.dart';
 
-class RangeSelectorPage extends StatelessWidget {
+class RangeSelectorPage extends ConsumerWidget {
   RangeSelectorPage({Key? key}) : super(key: key);
 
   final formKey = GlobalKey<FormState>();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(title: const Text('Select Range')),
       body: SafeArea(
         child: RangeSelectorForm(
           formKey: formKey,
           onMaxSaved: (val) =>
-              context.read<RandomizerChangeNotifier>().max = val,
+              ref.read(randomizerProvider.notifier).setMax(val),
           onMinSaved: (val) =>
-              context.read<RandomizerChangeNotifier>().min = val,
+              ref.read(randomizerProvider.notifier).setMin(val),
         ),
       ),
       floatingActionButton: FloatingActionButton(
